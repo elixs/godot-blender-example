@@ -1,7 +1,6 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://blender/tentacle.fbx" type="PackedScene" id=1]
-[ext_resource path="res://scripts/tentacle.gd" type="Script" id=2]
+[ext_resource path="res://scenes/tentacle.tscn" type="PackedScene" id=1]
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 40, 2, 40 )
@@ -9,11 +8,7 @@ size = Vector3( 40, 2, 40 )
 [sub_resource type="BoxShape" id=2]
 extents = Vector3( 20, 1, 20 )
 
-[sub_resource type="BoxShape" id=3]
-extents = Vector3( 1, 9.39883, 1 )
-
-[sub_resource type="BoxShape" id=4]
-extents = Vector3( 1.88726, 1, 1.90903 )
+[sub_resource type="CapsuleMesh" id=3]
 
 [node name="Spatial" type="Spatial"]
 __meta__ = {
@@ -33,33 +28,33 @@ material/0 = null
 [node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
 shape = SubResource( 2 )
 
-[node name="tentacle" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.323481, 1.59485, 3.35455 )
-script = ExtResource( 2 )
-
-[node name="Tentacle" parent="tentacle" index="0"]
-transform = Transform( 100, 0, 0, 0, -1.19209e-05, 100, 0, -100, -1.19209e-05, 0, 0, 0 )
-
-[node name="Cube" parent="tentacle/Tentacle" index="1"]
-transform = Transform( -4.37114e-08, -1, -1.19209e-07, 1, -4.37114e-08, -1.19209e-07, 1.19209e-07, -1.19209e-07, 1, -0.0711221, 5.64083e-05, -9.31323e-09 )
-
-[node name="KinematicBody" type="KinematicBody" parent="tentacle"]
-
-[node name="CollisionShape" type="CollisionShape" parent="tentacle/KinematicBody"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.03816, -0.942532, 0 )
-shape = SubResource( 3 )
-
-[node name="Area" type="Area" parent="tentacle"]
-
-[node name="CollisionShape" type="CollisionShape" parent="tentacle/Area"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.43095, 2.45549, 0 )
-shape = SubResource( 4 )
-
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.87462, 0.48481, 0, -0.48481, 0.87462, 0, 11.162, 15.4467 )
 
 [node name="OmniLight" type="OmniLight" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.03425, 4.37584, 6.99347 )
 light_energy = 3.0
+
+[node name="tentacle" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.93702, 1.29, 1.71906 )
+
+[node name="Tentacle" parent="tentacle" index="0"]
+transform = Transform( 100, 0, 0, 0, -1.19209e-05, 100, 0, -100, -1.19209e-05, 0, 0, 0 )
+bones/3/bound_children = [ NodePath("BoneAttachment") ]
+
+[node name="Bone003_end" parent="tentacle/Tentacle" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, -1.86265e-09 )
+
+[node name="BoneControl_end" parent="tentacle/Tentacle/Bone003_end" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0 )
+
+[node name="BoneAttachment" type="BoneAttachment" parent="tentacle/Tentacle" index="2"]
+transform = Transform( 1, 0, 0, 0, 0.455192, -0.890393, 0, 0.890393, 0.455192, 0, -0.000804702, 0.0595413 )
+bone_name = "Bone.003"
+
+[node name="MeshInstance" type="MeshInstance" parent="tentacle/Tentacle/BoneAttachment"]
+transform = Transform( -4.37114e-10, 0, 0.01, 0, 0.01, 0, -0.01, 0, -4.37114e-10, 0, 0.0213868, 0.00810015 )
+mesh = SubResource( 3 )
+material/0 = null
 
 [editable path="tentacle"]
